@@ -8,10 +8,10 @@ export class AccountControl {
         try {
             let accountService = new AccountService()
             let data = request.body
-            await accountService.singupAccount(data)
+            let newAccount = await accountService.singupAccount(data)
             response.status(200).json({
                 mensaje: "exito registrando la cuenta",
-                data: data
+                data: newAccount
             })
         } catch (error) {
             response.status(400).json({

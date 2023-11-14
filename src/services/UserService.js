@@ -9,8 +9,8 @@ export class UserService{
     async signupUser(data){        
         let user = new modelUser(data)      
         user.password = await bcrypt.hash(user.password, 10)          
-        await user.save()        
-        return user
+               
+        return await user.save() 
     }
     async deleteUser(id){        
         await modelUser.findByIdAndDelete(id)
@@ -19,6 +19,11 @@ export class UserService{
         await modelUser.findByIdAndUpdate(id, data)
     }
     async searchUser(id){
-        await modelUser.findById(id)
+        let user = await modelUser.findById(id)
+        return user
+    }
+    async searcAllUsers(){
+        let users = modelUser.find()
+        return users
     }
 }

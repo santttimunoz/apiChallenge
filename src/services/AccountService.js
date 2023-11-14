@@ -1,3 +1,4 @@
+import { response } from "express";
 import { modelAccounts } from "../models/accountsMo.js";
 
 export class AccountService{
@@ -5,9 +6,8 @@ export class AccountService{
 
     }
     async singupAccount(data){
-        let account = new modelAccounts(data)
-        await account.save()
-        return account
+        let account = new modelAccounts(data)       
+       return await account.save()         
     }
     async deleteAccount(id){            
         await modelAccounts.findByIdAndDelete(id)
@@ -18,4 +18,5 @@ export class AccountService{
     async searchAccount(id){
         await modelAccounts.findById(id)
     }
+    
 }

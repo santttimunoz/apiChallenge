@@ -5,7 +5,8 @@ const Schema = mongoose.Schema
 const account = new Schema({
     accountName:{
         type: String,
-        required: true
+        required: true, 
+       // unique : true
     },
     clientName:{
         type: String,
@@ -19,6 +20,9 @@ const account = new Schema({
         type: String,
         required: true
     }     
+},
+{
+    timestamps: true
 })
 
 export const modelAccounts = mongoose.model('accounts', account)
