@@ -1,27 +1,20 @@
-import express, { Router } from "express"
-import { UserControl} from "../controllers/UserControl.js"
+import express from "express"
 import { AccountControl } from "../controllers/accountControl.js"
 import { LoginControl } from "../controllers/LoginControl.js"
 import { TeamControl } from "../controllers/TeamControl.js"
 
 //middlewares
-import { validateUser } from "../middlewares/validateUser.js"
 import { validateAccount } from "../middlewares/validateAccount.js"
 import { validateTeam } from "../middlewares/validateTeam.js"
+import { routesUser } from "./users.router.js"
 
-let controlUser = new UserControl()
 let accountControl = new AccountControl()
 let loginControl = new LoginControl()
 let teamControl = new TeamControl()
 
 export let routes = express.Router()
 //aqui van las validaciones 
- routes.post("/api/users",  validateUser, controlUser.signupUser) 
- routes.delete("/api/users/:id", controlUser.deleteUser)
- routes.put("/api/users/:id", controlUser.updateUser)
- routes.get("/api/users/:id", controlUser.searchUser)
- routes.get("/api/users", controlUser.SearcAllUsers) 
-
+ routes.use(routesUser);
  routes.post("/api/accounts", validateAccount, accountControl.signupAccount)
  routes.delete("/api/accounts/:id", accountControl.deleteAccount)
  routes.put("/api/accounts/:id", accountControl.updateAccount)
