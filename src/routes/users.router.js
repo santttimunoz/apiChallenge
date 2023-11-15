@@ -4,9 +4,9 @@ import { validateUser } from "../middlewares/validateUser.js";
 import { validateJWT } from "../middlewares/validateJWT.js";
 import { validateRoles } from "../middlewares/validateRoles.js";
 
-let controlUser = new UserControl();
+const controlUser = new UserControl();
 
-export let routesUser = express.Router();
+const routesUser = express.Router();
 
 routesUser.post(
   "/api/users",
@@ -23,3 +23,5 @@ routesUser.get(
   validateRoles(["admin"]),
   controlUser.SearcAllUsers
 );
+
+export { routesUser };
