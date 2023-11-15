@@ -1,9 +1,9 @@
 import { LoginService } from "../services/logIngService.js";
 import jwt from "jsonwebtoken";
 
-export const secretOrPrivateKey = "admin123";
+
 export class LoginControl {
-  constructor() {}
+  constructor() { }
   async Login(request, response) {
     try {
       let loginService = new LoginService();
@@ -14,7 +14,7 @@ export class LoginControl {
           {
             id: userFound._id,
             // que el role se saque de userFound  --> userFound.role
-            rol: "admin",
+            rol: SECRET,
           },
           secretOrPrivateKey,
           { expiresIn: "1d" }

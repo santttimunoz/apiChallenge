@@ -45,7 +45,7 @@ export class TeamControl {
             let teamService = new TeamService()
             let id = request.params.id
             let data = request.body
-            let updateTeam = await teamService.UpdateTeam(id, data, {new: true})
+            let updateTeam = await teamService.UpdateTeam(id, data, { new: true })
             response.status(200).json({
                 message: "exito actualizando los datos",
                 data: updateTeam

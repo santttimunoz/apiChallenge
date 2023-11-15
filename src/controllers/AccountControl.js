@@ -47,29 +47,29 @@ export class AccountControl {
                 mesaje: "exito actualizando la cuenta",
                 data: data
             })
-        }catch(erro){
+        } catch (erro) {
             response.status(400).json({
                 mensaje: "error en la acualizacion de la cuenta",
                 data: null
             })
-        }        
+        }
     }
-    async searchAccount(request, response){
-        try{
+    async searchAccount(request, response) {
+        try {
             let accountService = new AccountService()
-        let id = request.params.id
-        let data = request.body
-        await accountService.searchAccount(id)
-        response.status(200).json({
-            mensaje: "exito buscando la informacion de la cuenta",
-            data: data
-        })
-        }catch(error){
+            let id = request.params.id
+            let data = request.body
+            await accountService.searchAccount(id)
+            response.status(200).json({
+                mensaje: "exito buscando la informacion de la cuenta",
+                data: data
+            })
+        } catch (error) {
             response.status(400).json({
                 mensaje: "error al buscar la informacion de la cuenta",
                 data: null
             })
         }
-        
+
     }
 }

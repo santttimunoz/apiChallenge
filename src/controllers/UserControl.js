@@ -6,20 +6,14 @@ export class UserControl {
     try {
       let serviceUser = new UserService();
       let data = request.body;
-      let newUser = await serviceUser.signupUser(data);
-      //eliminar el token en registro
-      let token = jwt.sign(
-        {
-          id: newUser._id,
-        },
-        "admin123",
-        { expiresIn: "1d" }
-      );
-      response.cookie("token", token);
+      let newUser = await serviceUser.signupUser(data);       
       response.status(200).json({
-        mensaje: "exito en el envio de info",
-        //no retornar password
-        data: newUser,
+        mensaje: "exito en el envio de info",        
+        data: {
+            name: newUser.name,
+            email: newUser.email,
+            role: newUser.role
+        }
       });
     } catch (error) {
       console.log(error);

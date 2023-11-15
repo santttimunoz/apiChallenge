@@ -1,8 +1,8 @@
 export function validateRoles(rolesPermitidos) {
   return (req, res, next) => {
-    const { rol ,userId } = req.payload;
-    console.log({ rolesPermitidos, rol });
-    if (rolesPermitidos.includes(rol)) {
+    const { role ,userId } = req.payload;
+    console.log({ rolesPermitidos, role });
+    if (rolesPermitidos.includes(role)) {
       next();
     } else {
       res

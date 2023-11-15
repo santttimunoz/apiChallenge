@@ -7,9 +7,9 @@ export function validateJWT(req, res, next) {
   }
   const [bearer, token] = authorizationHeader.split(" ");
   try {
-    const decoded = jwt.verify(token, "admin123");
+    const decoded = jwt.verify(token, SECRET);
     console.log(decoded);
-    req.payload = { userId: decoded.id, rol: decoded.rol };
+    req.payload = { userId: decoded.id, role: decoded.role };
     next();
   } catch (error) {
     res.status(401).json({ msg: "Token no válido." });
