@@ -1,6 +1,6 @@
 import  express from "express";
 
-import { LoginControl } from "../controllers/LoginControl";
+import { LoginControl } from "../controllers/LoginControl.js";
 import { validateJWT } from "../middlewares/validateJWT.js";
 import { validateRoles } from "../middlewares/validateRoles.js";
 

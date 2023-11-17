@@ -1,19 +1,27 @@
 import { UserService } from "../services/UserService.js";
-import jwt from "jsonwebtoken";
+
 export class UserControl {
   constructor() {}
   async signupUser(request, response) {
     try {
       let serviceUser = new UserService();
       let data = request.body;
-      let newUser = await serviceUser.signupUser(data);       
+      let newUser = await serviceUser.signupUser(data);
+
+      let info = newUser.map((user) => {
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          englishLevel: user.englishLevel,
+          knowledge: user.knowledge,
+          linkCv: user.linkCv,
+        };
+      });
       response.status(200).json({
-        mensaje: "exito en el envio de info",        
-        data: {
-            name: newUser.name,
-            email: newUser.email,
-            role: newUser.role
-        }
+        mensaje: "exito en el envio de info",
+        data: info,
       });
     } catch (error) {
       console.log(error);
@@ -74,12 +82,25 @@ export class UserControl {
   async SearcAllUsers(request, response) {
     try {
       let serviceUser = new UserService();
+      let users = await serviceUser.searcAllUsers();
+
+      let info = users.map((users) => {
+        return {
+          id: users.id,
+          name: users.name,
+          email: users.email,
+          role: users.role,
+          englishLevel: users.englishLevel,
+          knowledge: users.knowledge,
+          linkCv: users.linkCv,
+        };
+      });
       response.status(200).json({
         message: "exito buscando los usuarios",
-        users: await serviceUser.searcAllUsers(),
+        users: info,
       });
     } catch (error) {
-      response.status(200).json({
+      response.status(400).json({
         message: "error buscando los usuarios",
         users: null,
       });
