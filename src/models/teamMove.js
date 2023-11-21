@@ -15,23 +15,22 @@ const teamMove = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'users',
       required : true
-    },
-    eventDate:{
-      type: Date,
-      required: true,      
-    }, 
+    },     
     nameNewTeam:{
       type: String,
       required: true
     },
     nameOldTeam:{
-      type: String,
-      required: true
+      type: String,      
     },
     userName:{
       type: String,
       required: true
-    }
+    },
+    eventDate:{
+      type: Date,
+      required: true,      
+    },
   }
   )
 

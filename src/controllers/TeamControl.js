@@ -50,7 +50,7 @@ export class TeamControl {
     } catch (error) {
       console.log(error);
       response.status(200).json({
-        message: "exito actualizando los datos",
+        message: "error actualizando los datos",
         data: null,
       });
     }
@@ -60,12 +60,12 @@ export class TeamControl {
       let teamService = new TeamService();
       let team = await teamService.SearchTeams();
       response.status(200).json({
-        message: "exito buscando los datos",
+        message: "exito buscando los equipos",
         teamData: team,
       });
     } catch (error) {
       response.status(400).json({
-        message: "error buscando los teams",
+        message: "error buscando los equipos",
         teamData: null,
       });
     }
@@ -112,7 +112,7 @@ export class TeamControl {
       console.log("Movimientos encontrados:", moveFound);
       if (moveFound && moveFound.length > 0) {
         response.status(200).json({
-          message: `Movimientos`,
+          message: `Movimientos encontrados`,
           movesfound: moveFound,
         });
       } else {
@@ -122,7 +122,7 @@ export class TeamControl {
       }
     } catch (error) {
       console.log(error);
-      response.status(400).json({
+      response.status(404).json({
         message: "error trayendo el movimiento",
       });
     }

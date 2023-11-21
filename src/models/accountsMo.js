@@ -15,11 +15,7 @@ const account = new Schema({
     operationResponsible: {
         type: String,
         required: true
-    },
-    teamQuery: {
-        type: String,
-        required: true
-    }
+    }    
 },
     {
         timestamps: true

@@ -31,7 +31,7 @@ routesTeam.put(
     validateTeam,
     teamControl.UpdateTeam);
 routesTeam.get(
-    "/api/showteams",
+    "/api/team",
     validateJWT,
     validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
     teamControl.SearchTeams);
@@ -39,19 +39,7 @@ routesTeam.get(
     "/api/showmembers/:id",
     validateJWT,
     validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
-    teamControl.ShowMembers);    
-routesTeam.post(
-    "/api/teamMove",
-    validateJWT,
-    validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
-    teamControl.SaveTeamMove);
-routesTeam.get(
-    "/api/teamMove",
-    validateJWT,
-    validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
-    teamControl.ShowTeamMove
-)    
-   
+    teamControl.ShowMembers);      
 
 export { routesTeam }
 

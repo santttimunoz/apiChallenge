@@ -26,16 +26,13 @@ const user = new Schema({
     },
     //agregar resto de campos 
     englishLevel:{
-        type: String,
-        required: true
+        type: String,        
     },
     knowledge:{
-        type: String,
-        required: true
+        type: String,        
     },
     linkCv:{
-        type: String,
-        required: true
+        type: String,        
     }   
     //no todos capos son obligatorios
 })

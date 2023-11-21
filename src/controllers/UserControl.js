@@ -20,13 +20,13 @@ export class UserControl {
         };
       });
       response.status(200).json({
-        mensaje: "exito en el envio de info",
+        mensaje: "exito en la creacion del usuario",
         data: info,
       });
     } catch (error) {
       console.log(error);
       response.status(400).json({
-        mensaje: "falla en el envio de info",
+        mensaje: "falla en la creacion del usuario",
         data: error,
       });
     }
@@ -59,7 +59,7 @@ export class UserControl {
       });
     } catch (error) {
       response.status(400).json({
-        mensaje: "error al actualizar",
+        mensaje: "error al actualizar los datos",
         data: null,
       });
     }
@@ -74,7 +74,7 @@ export class UserControl {
       });
     } catch (error) {
       response.status(400).json({
-        mensaje: "error en la busqueda",
+        mensaje: "error en la busqueda del usuario",
         data: null,
       });
     }

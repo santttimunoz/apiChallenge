@@ -1,4 +1,4 @@
-import { LoginService } from "../services/logIngService.js";
+import { LoginService } from "../services/LoginService.js";
 import jwt from "jsonwebtoken";
 import 'dotenv/config'
 
