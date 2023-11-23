@@ -26,6 +26,11 @@ routes.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
  *   description: Operaciones relacionadas con inicio de sesion.
  *
  * components:
+ *   securitySchemes: #muestra el cuadro de autorizacion en la interfaz de usuario de swagger
+ *    bearerAuth:           
+ *     type: http
+ *     scheme: bearer
+ *     bearerFormat: JWT
  *   schemas:
  *     LogIn:
  *       type: object
@@ -39,6 +44,7 @@ routes.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
  *       required:
  *         - email
  *         - password
+
  * 
  * /api/login:
  *   post:
@@ -51,6 +57,9 @@ routes.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
  *       content:
  *         application/json:
  *           schema:
+ *             example:
+ *               email: josua@gmail.com
+ *               password: andres123.
  *             $ref: '#/components/schemas/LogIn'
  *     responses:
  *       '200':
@@ -82,11 +91,6 @@ routes.use(routesLogin);
  *   description: Operaciones relacionadas con usuarios
  *
  * components:
- *   securitySchemes:
- *    bearerAuth:           
- *     type: http
- *     scheme: bearer
- *     bearerFormat: JWT
  *   schemas:
  *     User:
  *       type: object
@@ -127,7 +131,7 @@ routes.use(routesLogin);
  *     tags:
  *       - Users 
  *     schema:
- *        $ref: 'api/components/schemas/User'  
+ *      $ref: 'api/components/schemas/User'  
  *     responses:
  *       '200':
  *         description: exito buscando los usuarios.
@@ -153,7 +157,15 @@ routes.use(routesLogin);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *            example:
+ *              name: alfredo vargas
+ *              email: alfre@gmail.com
+ *              password: afredorio12.
+ *              role: user
+ *              englishLevel: B1
+ *              knowledge: java
+ *              linkCv: https://www.cvwizard.com/es?gad=1&gclid=CjwKCAiAx_GqBhBQEiwAlDNAZv4fxxpVUJibhlP7Bk7OaJ_8dONU532H-gfbWZu69EtvWXPapLzsehoCtKYQAvD_BwE
+ *            $ref: '#/components/schemas/User'
  *     responses:
  *       '200':
  *         description: Usuario creado exitosamente.
@@ -168,7 +180,7 @@ routes.use(routesLogin);
  *            example:
  *              message: falla en creacion del usuario.
  * 
- * /api/users/:id:
+ * /api/users/{id}:
  *   get: 
  *     security: #ingreso de token de autorizacion
  *       - bearerAuth: []
@@ -176,12 +188,12 @@ routes.use(routesLogin);
  *     tags:
  *       - Users
  *     parameters:
- *       in: path 
- *       name: id         
- *       schema:
+ *      - in: path 
+ *        name: id         
+ *        schema:
  *         type: string
- *       required: true
- *       description: ID del usuario
+ *        required: true
+ *        description: ID del usuario
  *     responses:
  *       '201':
  *         description: Exito en la busqueda del usuario.
@@ -203,11 +215,25 @@ routes.use(routesLogin);
  *     description: Actualiza un usuario.
  *     tags:
  *       - Users
+ *     parameters:
+ *      - in: path 
+ *        name: id         
+ *        schema:
+ *         type: string
+ *        required: true
+ *        description: ID del usuario
  *     requestBody:
- *       required: false
+ *       required: true
  *       content:
  *         application/json:
  *           schema:
+ *             example:
+ *              name: alfred perez              
+ *              password: afred32*
+ *              role: admin
+ *              englishLeveL: C1
+ *              kwnowledge: java
+ *              linkCv: https://www.cvwizard.com/es?gad=1&gclid=CjwKCAiAx_GqBhBQEiwAlDNAZv4fxxpVUJibhlP7Bk7OaJ_8dONU532H-gfbWZu69EtvWXPapLzsehoCtKYQAvD_BwE
  *             $ref: '#/components/schemas/User'
  *     responses:
  *       '200':
@@ -230,6 +256,13 @@ routes.use(routesLogin);
  *     description: Elimina un usuario en el sistema.
  *     tags:
  *       - Users
+ *     parameters:
+ *      - in: path 
+ *        name: id         
+ *        schema:
+ *         type: string
+ *        required: true
+ *        description: ID del usuario
  *     requestBody:
  *       required: false
  *       content:
@@ -279,6 +312,29 @@ routes.use(routesUser);
  *         - operationResponsible
  * 
  * /api/accounts:
+ *    get:
+ *     security: #ingreso de token de autorizacion
+ *       - bearerAuth: []
+ *     summary: Trae una lista de usuarios.
+ *     description: Trae una lista de usuarios
+ *     tags:
+ *       - Accounts
+ *     schema:
+ *      $ref: '#/components/schemas/Account'  
+ *     responses:
+ *       '200':
+ *         description: la lista de cuentas.
+ *         content:
+ *          application/json:
+ *            example:
+ *              message: exito trayendo las lista de cuentas.
+ *       '400':
+ *         description: la lista de cuentas.       
+ *         content:
+ *          application/json:
+ *            example:
+ *              message: error buscando la lista de cuentas.
+ *    
  *    post:
  *     security: #ingreso de token de autorizacion
  *       - bearerAuth: []
@@ -291,6 +347,10 @@ routes.use(routesUser);
  *       content:
  *         application/json:
  *           schema:
+ *             example:
+ *               accountName: proyecto1
+ *               clientName: arkus
+ *               operationResponsible: sara restrepo
  *             $ref: '#/components/schemas/Account'
  *     responses:
  *       '200':
@@ -306,19 +366,22 @@ routes.use(routesUser);
  *            example:
  *              message: Error al registrar de la cuenta.
  * 
- * /api/accounts/:id:
+ * /api/accounts/{id}:
  *   get:
  *     security: #ingreso de token de autorizacion
  *       - bearerAuth: []
  *     summary: Trae una cuenta especificada por id
  *     tags:
- *       - Accounts
- *     requestBody:
- *       required: true 
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Account'
+ *       - Accounts   
+ *     parameters:
+ *      - in: path 
+ *        name: id         
+ *        schema:
+ *         type: string
+ *        required: true
+ *        description: ID de la cuenta
+ *     schema:
+ *       $ref: '#/components/schemas/Account'
  *     responses:
  *       '201':
  *         description: Exito buscando la informacion de la cuenta.
@@ -340,11 +403,22 @@ routes.use(routesUser);
  *     description: Actualiza una cuenta por id.
  *     tags:
  *       - Accounts
+ *     parameters:
+ *      - in: path 
+ *        name: id         
+ *        schema:
+ *         type: string
+ *        required: true
+ *        description: ID de la cuenta
  *     requestBody:
- *       required: false
+ *       required: true
  *       content:
  *         application/json:
  *           schema:
+ *             example:
+ *               accountName: proyectoUpdate
+ *               clientName: ficosa
+ *               operationResponsible: jose pulgarin
  *             $ref: '#/components/schemas/Account'
  *     responses:
  *       '200':
@@ -366,13 +440,16 @@ routes.use(routesUser);
  *     summary: Elimina una cuenta.
  *     description: Elimina una cuenta del sistema.
  *     tags:
- *       - Accounts
- *     requestBody:
- *       required: false
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Account'
+ *       - Accounts     
+ *     parameters:
+ *      - in: path 
+ *        name: id         
+ *        schema:
+ *         type: string
+ *        required: true
+ *        description: ID del cuenta
+ *     schema:
+ *       $ref: '#/components/schemas/Account'
  *     responses:
  *       '201':
  *         description: Cuenta eliminada.
@@ -415,16 +492,14 @@ routes.use(routesAccount);
  * 
  * /api/team:
  *   get:
+ *     security: #ingreso de token de autorizacion
+ *       - bearerAuth: []
  *     summary: trae una lista de los equipos.
  *     desciption: 
  *     tags:
- *       - Teams 
- *     requestBody: 
- *       required: false
- *       content: 
- *         application/json:
- *            schema: 
- *              $ref: '#/components/schemas/Team'
+ *       - Teams      
+ *     schema: 
+ *       $ref: '#/components/schemas/Team'
  *     responses:
  *       '200':
  *         description: exito buscando los equipos.
@@ -439,8 +514,10 @@ routes.use(routesAccount);
  *            example:
  *              message: error buscando los equipos.
  *   post:
+ *     security: #ingreso de token de autorizacion
+ *       - bearerAuth: []
  *     summary: Crea un nuevo equipo.
- *     description: Crea un nuevo equipo en el sistema.
+ *     description: Crea un nuevo equipo en el sistema donde los miembros son un array de IDs.
  *     tags:
  *       - Teams
  *     requestBody:
@@ -448,6 +525,9 @@ routes.use(routesAccount);
  *       content:
  *         application/json:
  *           schema:
+ *             example:
+ *               name: equipo 3
+ *               members: ["6553a3e119b5647ae6306d5c","6553a44419b5647ae6306d60"]               
  *             $ref: '#/components/schemas/Team'
  *     responses:
  *       '200':
@@ -463,17 +543,22 @@ routes.use(routesAccount);
  *            example:
  *              message: falla en la creacion del equipo.
  * 
- * /api/team/:id:
+ * /api/team/{id}:
  *   get:
+ *     security: #ingreso de token de autorizacion
+ *       - bearerAuth: []
  *     summary: Trae un usuario especificado por id
  *     tags:
- *       - Teams
- *     requestBody:
- *       required: true 
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Team'
+ *       - Teams     
+ *     parameters:
+ *      - in: path 
+ *        name: id         
+ *        schema:
+ *         type: string
+ *        required: true
+ *        description: ID del equipo
+ *     schema:
+ *       $ref: '#/components/schemas/Team'
  *     responses:
  *       '201':
  *         description: Exito en la busqueda del del equipo.
@@ -489,15 +574,27 @@ routes.use(routesAccount);
  *              message: Error en la busqueda del equipo.
  *       
  *   put:
+ *     security: #ingreso de token de autorizacion
+ *       - bearerAuth: []
  *     summary: Actualizar equipo.
- *     description: Actualiza un equipo.
+ *     description: Solo actualiza el nombre de un equipo.
  *     tags:
  *       - Teams
+ *     parameters:
+ *      - in: path 
+ *        name: id         
+ *        schema:
+ *         type: string
+ *        required: true
+ *        description: ID del equipo 
  *     requestBody:
- *       required: false
+ *       required: true
  *       content:
  *         application/json:
  *           schema:
+ *             example:
+ *               name: equipo update
+ *               members: [] 
  *             $ref: '#/components/schemas/Team'
  *     responses:
  *       '200':
@@ -514,16 +611,21 @@ routes.use(routesAccount);
  *              message: Error actualizando los datos.
  *       
  *   delete:
+ *     security: #ingreso de token de autorizacion
+ *       - bearerAuth: []
  *     summary: Elimina un equipo.
  *     description: Elimina un equipo en el sistema.
  *     tags:
  *       - Teams
- *     requestBody:
- *       required: false
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Team'
+ *     parameters:
+ *      - in: path 
+ *        name: id         
+ *        schema:
+ *         type: string
+ *        required: true
+ *        description: ID del equipo
+ *     schema:
+ *       $ref: '#/components/schemas/Team'
  *     responses:
  *       '201':
  *         description: Equipo eliminado.
@@ -581,6 +683,8 @@ routes.use(routesTeam);
  * 
  * /api/teamMove:
  *   post:
+ *     security: #ingreso de token de autorizacion
+ *       - bearerAuth: []
  *     summary: Crea un movimineto de equipo.
  *     description: Registra un movimiento de equipo en el sistema.
  *     tags:
@@ -589,7 +693,11 @@ routes.use(routesTeam);
  *       required: true
  *       content:
  *         application/json:
- *           schema:
+ *           schema:   
+ *             example:
+ *               idOldTeam: 
+ *               idNewTeam: 6553d8fd3763420fd915ed4b
+ *               idUser: 6553a3e119b5647ae6306d5c         
  *             $ref: '#/components/schemas/TeamMove'
  *     responses:
  *       '200':
@@ -606,16 +714,35 @@ routes.use(routesTeam);
  *              message: Error guardando el movimiento de equipo.
  * 
  *   get:
+ *     security: #ingreso de token de autorizacion
+ *       - bearerAuth: []
  *     summary: Trae un movimineto de equipo.
  *     description: Trae un movimiento de equipo en el sistema.
+ *     parameters:
+ *      - in: query 
+ *        name: idUser         
+ *        schema:
+ *         type: string        
+ *        description: ID del usuario
+ *      - in: query 
+ *        name: userName      
+ *        schema:
+ *         type: string        
+ *        description: nombre del usuario
+ *      - in: query
+ *        name: nameNewTeam
+ *        schema:
+ *          type: string
+ *        description: nombre del nuevo equipo al que ingresara el usuario
+ *      - in: query
+ *        name: eventDate
+ *        schema:
+ *          type: string
+ *        description: fecha de cuando sucedio el evento
  *     tags:
- *      - TeamMoves
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/TeamMove'
+ *      - TeamMoves     
+ *     schema:
+ *        $ref: '#/components/schemas/TeamMove'
  *     responses:
  *       '200':
  *         description: Traer movimiento de equipo.

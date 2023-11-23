@@ -6,7 +6,6 @@ export class UserService {
   async signupUser(data) {
     let user = new modelUser(data);
     user.password = await bcrypt.hash(user.password, 10);
-
     return await user.save();
   }
   async deleteUser(id) {

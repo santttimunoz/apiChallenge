@@ -57,12 +57,11 @@ export class AccountControl {
     async searchAccount(request, response) {
         try {
             let accountService = new AccountService()
-            let id = request.params.id
-            let data = request.body
-            await accountService.searchAccount(id)
+            let id = request.params.id            
+            let account = await accountService.searchAccount(id)
             response.status(200).json({
                 mensaje: "exito buscando la informacion de la cuenta",
-                data: data
+                data: account
             })
         } catch (error) {
             response.status(400).json({
@@ -71,5 +70,29 @@ export class AccountControl {
             })
         }
 
+    }
+    async searchAccounts(request, response){
+        try {
+            let accountService = new AccountService()
+            let accounts = await accountService.searchAccounts()
+            let info = accounts.map((account) => {
+                return{
+                    id: account.id,
+                    accountName: account.accountName,
+                    accountClient: account.clientName,
+                    operationResponsible: account.operationResponsible
+                }
+            })            
+            response.status(200).json({
+              message: "exito trayendo la lista de cuentas",
+              accounts :  info
+            })
+        } catch (error) {
+            console.log("error debido a: "+error)
+            response.status(400).json({
+                message: "error buscando la lista de cuentas",
+                accounts :  null
+              })
+        }
     }
 }

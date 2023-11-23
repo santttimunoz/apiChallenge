@@ -23,14 +23,15 @@ export const options = {
     ],
   },
   apis: ["src/routes/routes.js"],
-
-  components: {
-    securitySchemes: {
-      bearerAuth: {
-        type: "http",
-        scheme: "bearer",
-        bearerFormat: "JWT",
-      },
-    },
-  },
+  
+  //esto parece no hacer efecto en la interfaz de usuario de swagger
+  // components: {
+  //   securitySchemes: {
+  //     bearerAuth: {
+  //       type: "http",
+  //       scheme: "bearer",
+  //       bearerFormat: "JWT",
+  //     },
+  //   },
+  // },
 };

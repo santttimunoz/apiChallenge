@@ -10,37 +10,43 @@ const teamControl = new TeamControl();
 const routesTeam = express.Router();
 
 const ROLES = {
-    SUPER_ADMIN: "superAdmin",
-    ADMIN: "admin",
-    NORMAL_USER: "normalUser"
-  }
+  SUPER_ADMIN: "superAdmin",
+  ADMIN: "admin",
+  NORMAL_USER: "normalUser",
+};
 
 routesTeam.post(
-    "/api/team",
-    validateJWT,
-    validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
-    validateTeam,
-    teamControl.SignupTeam);
-routesTeam.delete(
-    "/api/team/:id",
-    teamControl.DeleteTeam);
+  "/api/team",
+  validateJWT,
+  validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
+  validateTeam,
+  teamControl.SignupTeam
+);
+routesTeam.delete("/api/team/:id", teamControl.DeleteTeam);
 routesTeam.put(
-    "/api/team/:id",
-    validateJWT,
-    validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
-    validateTeam,
-    teamControl.UpdateTeam);
+  "/api/team/:id",
+  validateJWT,
+  validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
+  validateTeam,
+  teamControl.UpdateTeam
+);
 routesTeam.get(
-    "/api/team",
-    validateJWT,
-    validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
-    teamControl.SearchTeams);
+  "/api/team",
+  validateJWT,
+  validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
+  teamControl.SearchTeams
+);
 routesTeam.get(
-    "/api/showmembers/:id",
-    validateJWT,
-    validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
-    teamControl.ShowMembers);      
+  "/api/team/:id",
+  validateJWT,
+  validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
+  teamControl.SearchTeam
+);
+routesTeam.get(
+  "/api/showmembers/:id",
+  validateJWT,
+  validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
+  teamControl.ShowMembers
+);
 
-export { routesTeam }
-
-
+export { routesTeam };

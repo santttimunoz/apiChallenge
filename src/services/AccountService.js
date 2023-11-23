@@ -16,7 +16,11 @@ export class AccountService {
         await modelAccounts.findByIdAndUpdate(id, data)
     }
     async searchAccount(id) {
-        await modelAccounts.findById(id)
+        return await modelAccounts.findById(id)        
+    }
+    async searchAccounts(){
+        let accounts = modelAccounts.find()
+        return accounts
     }
 
 }

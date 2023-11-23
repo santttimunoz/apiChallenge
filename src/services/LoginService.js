@@ -5,8 +5,8 @@ export class LoginService {
     constructor() {
 
     }
-    async validateLog({email,password}) {        
-        let userFound = await modelUser.findOne({ email: email })       
+    async validateLog({email,password}) {                        
+        let userFound = await modelUser.findOne({ email: email })  
         if(!userFound || !userFound.password){
             return null
         } 

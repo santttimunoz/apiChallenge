@@ -7,28 +7,35 @@ export class UserControl {
       let serviceUser = new UserService();
       let data = request.body;
       let newUser = await serviceUser.signupUser(data);
-
-      let info = newUser.map((user) => {
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          englishLevel: user.englishLevel,
-          knowledge: user.knowledge,
-          linkCv: user.linkCv,
-        };
-      });
+      // let info = newUser.map((user) => {
+      //   return {
+      //     id: user.id,
+      //     name: user.name,
+      //     email: user.email,
+      //     role: user.role,
+      //     englishLevel: user.englishLevel,
+      //     knowledge: user.knowledge,
+      //     linkCv: user.linkCv,
+      //   };
+      // });
       response.status(200).json({
         mensaje: "exito en la creacion del usuario",
-        data: info,
+        data: newUser
       });
     } catch (error) {
       console.log(error);
-      response.status(400).json({
+      // Código 11000 es un código de error de MongoDB que indica duplicados (clave única duplicada)
+      if (error.code === 11000){
+        response.status(400).json({
+          mensaje: "algun campo duplicado, por favor ingrese datos distintos",
+          data: error,
+        });
+      }else{
+        response.status(400).json({
         mensaje: "falla en la creacion del usuario",
         data: error,
       });
+      }      
     }
   }
   async deleteUser(request, response) {
@@ -38,7 +45,7 @@ export class UserControl {
       await serviceUser.deleteUser(id);
       response.status(200).json({
         mensaje: "exito eliminando los datos",
-        data: "id del usuario eliminado" + id,
+        data: "id del usuario eliminado: " + id,
       });
     } catch (error) {
       response.status(400).json({
@@ -54,8 +61,7 @@ export class UserControl {
       let data = request.body;
       await serviceUser.updateUser(id, data);
       response.status(200).json({
-        mensaje: "exito actulizando datos",
-        data: data,
+        mensaje: "exito actulizando datos",        
       });
     } catch (error) {
       response.status(400).json({

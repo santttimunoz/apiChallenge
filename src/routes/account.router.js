@@ -37,5 +37,11 @@ routesAccount.get(
     validateJWT,
     validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
     accountControl.searchAccount);
+    routesAccount.get(
+        "/api/accounts",
+        validateJWT,
+        validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
+        accountControl.searchAccounts);
+
 
 export { routesAccount }

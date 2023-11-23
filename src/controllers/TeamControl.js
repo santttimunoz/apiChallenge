@@ -1,4 +1,4 @@
-import { teamsMovemodel } from "../models/teamMove.js";
+import { request } from "express";
 import { TeamService } from "../services/TeamService.js";
 
 export class TeamControl {
@@ -7,6 +7,7 @@ export class TeamControl {
     try {
       let teamService = new TeamService();
       let data = request.body;
+
       let team = await teamService.SignupTeam(data);
       response.status(200).json({
         mensaje: "exito registrando el team",
@@ -41,8 +42,8 @@ export class TeamControl {
     try {
       let teamService = new TeamService();
       let id = request.params.id;
-      let data = request.body;
-      let updateTeam = await teamService.UpdateTeam(id, data, { new: true });
+      let data = request.body;      
+      let updateTeam = await teamService.UpdateTeam(id, data);      
       response.status(200).json({
         message: "exito actualizando los datos",
         data: updateTeam,
@@ -67,6 +68,27 @@ export class TeamControl {
       response.status(400).json({
         message: "error buscando los equipos",
         teamData: null,
+      });
+    }
+  }
+  async SearchTeam(request, response) {
+    try {
+      let teamService = new TeamService();
+      let id = request.params.id;   
+      let team = await teamService.SearchTeam(id)   
+      if(team == null){
+        response.status(401).json({
+          message: "equipo no existe",          
+        });
+      }
+      response.status(200).json({
+        message: "exito busacado el equipo",
+        team: team,
+      });
+    } catch (error) {
+      response.status(400).json({
+        message: "error buscando el equipo",
+        team: null,
       });
     }
   }
@@ -99,14 +121,14 @@ export class TeamControl {
     } catch (error) {
       console.log(error);
       response.status(400).json({
-        message: "error guardando el movimiento del equipo",
+        message: "error guardando el movimiento del equipo: "+ error.message,       
       });
     }
   }
   async ShowTeamMove(request, response) {
     try {
-      let teamM = new TeamService();      
-      let data = request.query      
+      let teamM = new TeamService();
+      let data = request.query;
       console.log("data:", data);
       let moveFound = await teamM.ShowTeamMove(data);
       console.log("Movimientos encontrados:", moveFound);
