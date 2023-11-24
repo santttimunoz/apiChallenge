@@ -50,22 +50,13 @@ export const validateUser = [
             }            
         },
         englishLevel : {
-            in : ['body'],
-            notEmpty : {
-                errorMessage : 'englishLevel should not be empty'
-            }            
+            in : ['body'],                        
         },
         knowledge:{
-            in : ['body'],
-            notEmpty : {
-                errorMessage : 'knowledge should not be empty'
-            }          
+            in : ['body'],                     
         },
         linkCv : {
-            in : ['body'],
-            notEmpty : {
-                 errorMessage : 'linkCv should not be empty'
-            }           
+            in : ['body'],                      
         }
     }),
     (request, response, next)=>{

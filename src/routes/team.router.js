@@ -4,16 +4,12 @@ import { TeamControl } from "../controllers/TeamControl.js";
 import { validateTeam } from "../middlewares/validateTeam.js";
 import { validateJWT } from "../middlewares/validateJWT.js";
 import { validateRoles } from "../middlewares/validateRoles.js";
-
+import { ROLES } from "../constants/roles.js";
 const teamControl = new TeamControl();
 
 const routesTeam = express.Router();
 
-const ROLES = {
-  SUPER_ADMIN: "superAdmin",
-  ADMIN: "admin",
-  NORMAL_USER: "normalUser",
-};
+
 
 routesTeam.post(
   "/api/team",
@@ -49,4 +45,4 @@ routesTeam.get(
   teamControl.ShowMembers
 );
 
-export { routesTeam };
+export { routesTeam, ROLES };

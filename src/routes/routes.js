@@ -122,6 +122,31 @@ routes.use(routesLogin);
  *         - password
  *         - role
  * 
+ * /api/profile:
+ *   get:
+ *     security: #ingreso de token de autorizacion
+ *       - bearerAuth: []
+ *     summary: Trae el perfil del usuario logeado.
+ *     description: Trae una lista de usuarios
+ *     tags:
+ *       - Users 
+ *     schema:
+ *      $ref: 'api/components/schemas/User'  
+ *     responses:
+ *       '200':
+ *         description: exito buscando los usuarios.
+ *         content:
+ *          application/json:
+ *            example:
+ *              message: exito buscando los usuarios.
+ *       '400':
+ *         description: error buscando los usuarios.       
+ *         content:
+ *          application/json:
+ *            example:
+ *              message: error buscando los usuarios.
+ * 
+ * 
  * /api/users:
  *   get:
  *     security: #ingreso de token de autorizacion
@@ -162,9 +187,7 @@ routes.use(routesLogin);
  *              email: alfre@gmail.com
  *              password: afredorio12.
  *              role: user
- *              englishLevel: B1
- *              knowledge: java
- *              linkCv: https://www.cvwizard.com/es?gad=1&gclid=CjwKCAiAx_GqBhBQEiwAlDNAZv4fxxpVUJibhlP7Bk7OaJ_8dONU532H-gfbWZu69EtvWXPapLzsehoCtKYQAvD_BwE
+ *              idTeam: 655f923554403a4e45326e72            
  *            $ref: '#/components/schemas/User'
  *     responses:
  *       '200':
@@ -231,8 +254,8 @@ routes.use(routesLogin);
  *              name: alfred perez              
  *              password: afred32*
  *              role: admin
- *              englishLeveL: C1
- *              kwnowledge: java
+ *              englishLevel: C1
+ *              knowledge: java
  *              linkCv: https://www.cvwizard.com/es?gad=1&gclid=CjwKCAiAx_GqBhBQEiwAlDNAZv4fxxpVUJibhlP7Bk7OaJ_8dONU532H-gfbWZu69EtvWXPapLzsehoCtKYQAvD_BwE
  *             $ref: '#/components/schemas/User'
  *     responses:
@@ -262,13 +285,9 @@ routes.use(routesLogin);
  *        schema:
  *         type: string
  *        required: true
- *        description: ID del usuario
- *     requestBody:
- *       required: false
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
+ *        description: ID del usuario     
+ *     schema:
+ *        $ref: '#/components/schemas/User'
  *     responses:
  *       '201':
  *         description: Usuario eliminado.
@@ -593,8 +612,7 @@ routes.use(routesAccount);
  *         application/json:
  *           schema:
  *             example:
- *               name: equipo update
- *               members: [] 
+ *               name: equipo update                
  *             $ref: '#/components/schemas/Team'
  *     responses:
  *       '200':
