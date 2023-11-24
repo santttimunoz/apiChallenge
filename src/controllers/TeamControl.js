@@ -16,7 +16,7 @@ export class TeamControl {
     } catch (error) {
       console.error(error);
       response.status(400).json({
-        message: "fallo en el registro del team",
+        message: "fallo en el registro del team: "+error.message,
         data: null,
       });
     }
@@ -71,18 +71,14 @@ export class TeamControl {
       });
     }
   }
+  //funcion inhabilitada
   async SearchTeam(request, response) {
     try {
       let teamService = new TeamService();
       let id = request.params.id;   
-      let team = await teamService.SearchTeam(id)   
-      if(team == null){
-        response.status(401).json({
-          message: "equipo no existe",          
-        });
-      }
+      let team = await teamService.SearchTeam(id)         
       response.status(200).json({
-        message: "exito busacado el equipo",
+        message: "exito buscando el equipo",
         team: team,
       });
     } catch (error) {
@@ -99,12 +95,12 @@ export class TeamControl {
       //let data = request.body
       let team = await teamService.ShowMembers(id);
       response.status(200).json({
-        message: "exito buscando los miembros del equipo",
+        message: "exito buscando le equipo",
         members: team,
       });
     } catch (error) {
       response.status(400).json({
-        message: "fallo mostrando los miembros",
+        message: "fallo mostrando el equipo",
         members: null,
       });
     }
@@ -146,6 +142,21 @@ export class TeamControl {
       console.log(error);
       response.status(404).json({
         message: "error trayendo el movimiento",
+      });
+    }
+  }
+  async showTeamMoveList(request, response){
+    try {
+      let teamService = new TeamService();
+      let team = await teamService.ShowTeamMoveList();
+      response.status(200).json({
+        message: "exito buscando la lista de movimientos",
+        teamData: team,
+      });
+    } catch (error) {
+      response.status(400).json({
+        message: "error buscando la lista de movimientos",
+        teamData: null,
       });
     }
   }

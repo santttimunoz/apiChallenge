@@ -32,7 +32,7 @@ export class AccountControl {
             })
         } catch (error) {
             response.status(400).json({
-                mensaje: "error en la eliminacion de la cuenta",
+                message: "error en la eliminacion de la cuenta: "+error.message,
                 data: null
             })
         }
@@ -47,9 +47,9 @@ export class AccountControl {
                 mesaje: "exito actualizando la cuenta",
                 data: data
             })
-        } catch (erro) {
+        } catch (error) {
             response.status(400).json({
-                mensaje: "error en la acualizacion de la cuenta",
+                mensaje: "error en la acualizacion de la cuenta: "+error.message,
                 data: null
             })
         }
@@ -65,7 +65,7 @@ export class AccountControl {
             })
         } catch (error) {
             response.status(400).json({
-                mensaje: "error al buscar la informacion de la cuenta",
+                mensaje: "error al buscar la informacion de la cuenta: "+error.message,
                 data: null
             })
         }

@@ -8,17 +8,17 @@ export class UserService {
   invalidRole(newRole, userRoleJWT) {
     return (
       newRole == ROLES.SUPER_ADMIN ||
-      (newRole == ROLES.ADMIN && !userRoleJWT == ROLES.SUPER_ADMIN)
+      (newRole == ROLES.ADMIN && userRoleJWT !== ROLES.SUPER_ADMIN)
     );
   }
-  validate(data, userRoleJWT){
+  validate(data, userRoleJWT) {
     if (this.invalidRole(data.role, userRoleJWT)) {
       throw new Error("no tienes permisos para crear este rol");
     }
   }
 
   async createUser({ idTeam, ...data }, userRoleJWT) {
-    this.validate(data, userRoleJWT)
+    this.validate(data, userRoleJWT);
 
     let team = await teamModel.findById(idTeam);
     if (!team) {
@@ -43,11 +43,29 @@ export class UserService {
     if (userIdJWT == id) {
       throw new Error("no puedes eliminar tus propios datos");
     }
+    //let user = await modelUser.findById(id)
+    let teams = await teamModel.find();
+
+    for (let i = 0; i < teams.length; i++) {
+      let team = teams[i];
+
+      // Buscar al usuario en los miembros del equipo
+      let index = team.members.indexOf(id);
+
+      if (index !== -1) {
+        // Si el usuario está en el equipo, quitarlo
+        team.members.splice(index, 1);
+
+        // Guardar el equipo modificado en la base de datos
+        await team.save();
+      }
+    }
+
     return await modelUser.findByIdAndDelete(id);
   }
   async updateUser(id, data, userRoleJWT) {
     if (data.role) {
-      this.validate(data, userRoleJWT)
+      this.validate(data, userRoleJWT);
     }
     let newUser = await modelUser.findByIdAndUpdate(id, data, { new: true });
     // delete newUser.password;

@@ -6,6 +6,23 @@ import { modelUser } from "../models/UserMo.js";
 export class TeamService {
   constructor() {}
   async SignupTeam(data) {
+    let users = await modelUser.find()
+    let teams = await teamModel.find();
+    for (let i = 0; i < teams.length; i++) {
+      let existingTeam = teams[i];
+      for (let j = 0; j < data.members.length; j++) {
+        let newMember = data.members[i];
+        let userExists = users.some((user) => user._id === newMember);
+        if (!userExists) {
+          throw new Error(`El usuario con ID ${newMember} no existe`);
+        }
+        if (existingTeam.members.includes(newMember)) {
+          throw new Error(
+            `El usuario ${newMember} ya está en el equipo ${existingTeam.name}`
+          );
+        }
+      }
+    }
     const team = new teamModel(data);
     return await team.save();
   }
@@ -29,13 +46,36 @@ export class TeamService {
     let team = await teamModel.find();
     return team;
   }
+  //deshabilitar funcion
   async SearchTeam(id) {
     let team = await teamModel.findById(id);
+    if (!team == null) {
+      throw new Error("el equipo no existe");
+    }
     return team;
   }
   async ShowMembers(id) {
-    let populatedUser = await teamModel.findById(id).populate("members").exec();
-    return populatedUser;
+    let populatedTeam = await teamModel.findById(id).populate("members").exec();
+    if (!populatedTeam) {
+      throw new Error("No se encontró un equipo con el ID proporcionado");
+    }
+    let teamInfo = {
+      id: populatedTeam._id,
+      name: populatedTeam.name,
+    };
+
+    let users = populatedTeam.members.map((user) => {
+      return {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      };
+    });
+    return {
+      team: teamInfo,
+      members: users,
+    };
   }
 
   async TeamMove(data) {
@@ -55,11 +95,11 @@ export class TeamService {
       throw new Error("usuario no existe");
     }
 
-     oldTeam.members.pull(data.idUser);
-     newTeam.members.push(data.idUser);    
+    oldTeam.members.pull(data.idUser);
+    newTeam.members.push(data.idUser);
 
-     oldTeam.save()
-     newTeam.save()
+    oldTeam.save();
+    newTeam.save();
     // let oldTeamName = await teamModel.findById(data.idOldTeam)
     // let newTeamName = await teamModel.findById(data.idNewTeam)
 
@@ -93,5 +133,9 @@ export class TeamService {
     }
     let teamM = await teamsMovemodel.find(filter);
     return teamM;
+  }
+  async ShowTeamMoveList() {
+    let team = await teamsMovemodel.find();
+    return team;
   }
 }

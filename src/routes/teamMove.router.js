@@ -25,4 +25,10 @@ routesTeamMove.get(
     validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
     teamControl.ShowTeamMove
 )  
+routesTeamMove.get(
+    "/api/teamMoveList",
+    validateJWT,
+    validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
+    teamControl.showTeamMoveList
+) 
 export {routesTeamMove}

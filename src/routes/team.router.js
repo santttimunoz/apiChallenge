@@ -36,13 +36,15 @@ routesTeam.get(
   "/api/team/:id",
   validateJWT,
   validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
-  teamControl.SearchTeam
-);
-routesTeam.get(
-  "/api/showmembers/:id",
-  validateJWT,
-  validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
+  //cambiar nobre de esta funcion 
   teamControl.ShowMembers
 );
+
+// routesTeam.get(
+//   "/api/showmembers/:id",
+//   validateJWT,
+//   validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
+//   teamControl.SearchTeam
+// );
 
 export { routesTeam, ROLES };

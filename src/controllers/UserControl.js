@@ -33,7 +33,7 @@ export class UserControl {
         });
       } else {
         response.status(400).json({
-          mensaje: "falla en la creacion del usuario",
+          mensaje: "falla en la creacion del usuario: "+error.message,
           data: error,
         });
       }

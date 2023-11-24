@@ -235,7 +235,7 @@ routes.use(routesLogin);
  *     security: #ingreso de token de autorizacion
  *       - bearerAuth: []
  *     summary: Actualizar usuario.
- *     description: Actualiza un usuario.
+ *     description: agregar el campo a actualizar o el un campo nuevo para agregar
  *     tags:
  *       - Users
  *     parameters:
@@ -250,10 +250,7 @@ routes.use(routesLogin);
  *       content:
  *         application/json:
  *           schema:
- *             example:
- *              name: alfred perez              
- *              password: afred32*
- *              role: admin
+ *             example:              
  *              englishLevel: C1
  *              knowledge: java
  *              linkCv: https://www.cvwizard.com/es?gad=1&gclid=CjwKCAiAx_GqBhBQEiwAlDNAZv4fxxpVUJibhlP7Bk7OaJ_8dONU532H-gfbWZu69EtvWXPapLzsehoCtKYQAvD_BwE
@@ -699,6 +696,30 @@ routes.use(routesTeam);
  *         - userName
  *         - eventDate
  * 
+ * /api/teamMoveList:
+ *   get:
+ *     security: #ingreso de token de autorizacion
+ *       - bearerAuth: []
+ *     summary: Trae la lista de movimientos.
+ *     description: Trae la lista de movimientos.
+ *     tags:
+ *      - TeamMoves
+ *     schema:
+ *       $ref: #/components/schemas/TeamMove
+ *     responses:
+ *       '200':
+ *         description: Error .
+ *         content:
+ *          application/json:
+ *            example:
+ *              message:exito buscando la lista de movimientos.
+ *       '400':
+ *         description: Error al traer lista de movimientos.
+ *         content:
+ *          application/json:
+ *            example:
+ *              message: Error buscando la lista de movimientos.
+ * 
  * /api/teamMove:
  *   post:
  *     security: #ingreso de token de autorizacion
@@ -735,7 +756,7 @@ routes.use(routesTeam);
  *     security: #ingreso de token de autorizacion
  *       - bearerAuth: []
  *     summary: Trae un movimineto de equipo.
- *     description: Trae un movimiento de equipo en el sistema.
+ *     description: Trae un movimiento especifico.
  *     parameters:
  *      - in: query 
  *        name: idUser         
