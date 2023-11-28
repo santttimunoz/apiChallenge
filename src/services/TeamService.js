@@ -6,26 +6,26 @@ import { modelUser } from "../models/UserMo.js";
 export class TeamService {
   constructor() {}
   async SignupTeam(data) {
-    let users = await modelUser.find()
-    let teams = await teamModel.find();
-    for (let i = 0; i < teams.length; i++) {
-      let existingTeam = teams[i];
-      for (let j = 0; j < data.members.length; j++) {
-        let newMember = data.members[i];
-        let userExists = users.some((user) => user._id === newMember);
-        if (!userExists) {
-          throw new Error(`El usuario con ID ${newMember} no existe`);
-        }
-        if (existingTeam.members.includes(newMember)) {
-          throw new Error(
-            `El usuario ${newMember} ya está en el equipo ${existingTeam.name}`
-          );
-        }
-      }
-    }
+    // let users = await modelUser.find()
+    // let teams = await teamModel.find();
+    // for (let i = 0; i < teams.length; i++) {
+    //   let existingTeam = teams[i];
+    //   for (let j = 0; j < data.members.length; j++) {
+    //     let newMember = data.members[i];
+    //     let userExists = users.some((user) => user._id === newMember);
+    //     if (!userExists) {
+    //       throw new Error(`El usuario con ID ${newMember} no existe`);
+    //     }
+    //     if (existingTeam.members.includes(newMember)) {
+    //       throw new Error(
+    //         `El usuario ${newMember} ya está en el equipo ${existingTeam.name}`
+    //       );
+    //     }
+    //   }
     const team = new teamModel(data);
     return await team.save();
   }
+
   async DeleteTeam(id) {
     //validar que el equipo no tenga usuarios
     const team = await teamModel.findByIdAndDelete(id).exec();
@@ -78,14 +78,27 @@ export class TeamService {
     };
   }
 
-  async TeamMove(data) {
-    if (data.idNewTeam == data.idOldTeam) {
+  async TeamMove(data) {    
+    // let oldTeam = await teamModel.findById(data.idOldTeam);
+    // if (!oldTeam) {
+    //   throw new Error("no existe equipo de salida");
+    // }
+    let Teams = await teamModel.find();
+
+    let filteredTeams = Teams.filter((team) => team.members.includes(data.idUser));
+
+    let teamIds = filteredTeams.map((team) => team._id);    
+    let oldTeamName = filteredTeams.map((team) => team.name);
+
+    if(teamIds.length === 0 && oldTeamName === 0){
+      teamIds = 'no hay equipo de salida'
+      oldTeamName = 'no hay equipo de salida'
+    }
+
+    if (data.idNewTeam == teamIds) {
       throw new Error("registrando movimiento para el mismo equipo");
     }
-    let oldTeam = await teamModel.findById(data.idOldTeam);
-    if (!oldTeam) {
-      throw new Error("no existe equipo de salida");
-    }
+    
     let newTeam = await teamModel.findById(data.idNewTeam);
     if (!newTeam) {
       throw new Error("no equipo de destino");
@@ -95,21 +108,24 @@ export class TeamService {
       throw new Error("usuario no existe");
     }
 
-    oldTeam.members.pull(data.idUser);
+    // oldTeam.members.pull();
+    filteredTeams.forEach((team) => {    
+      team.members.pull(data.idUser);
+    });
     newTeam.members.push(data.idUser);
 
-    oldTeam.save();
-    newTeam.save();
+    await Promise.all(filteredTeams.map((team) => team.save()));
+    await newTeam.save();
     // let oldTeamName = await teamModel.findById(data.idOldTeam)
     // let newTeamName = await teamModel.findById(data.idNewTeam)
 
     const teamM = new teamsMovemodel({
       idNewTeam: data.idNewTeam,
-      idOldTeam: data.idOldTeam,
+      idOldTeam: teamIds,
       idUser: data.idUser,
       eventDate: data.eventDate || new Date(),
       nameNewTeam: newTeam.name,
-      nameOldTeam: oldTeam.name,
+      nameOldTeam: oldTeamName.join(', '),
       userName: user.name,
     });
     // let teamM = new teamsMovemodel(data);
@@ -120,7 +136,7 @@ export class TeamService {
     const { nameNewTeam, userName, eventDate, idUser } = data;
     let filter = {};
     if (idUser) {
-      filter.idUser = { $regex: new RegExp(idUser, "i") };
+      filter.idUser;
     }
     if (nameNewTeam) {
       filter.nameNewTeam = { $regex: new RegExp(nameNewTeam, "i") };
@@ -129,7 +145,7 @@ export class TeamService {
       filter.userName = { $regex: new RegExp(userName, "i") };
     }
     if (eventDate) {
-      filter.eventDate = { $regex: new RegExp(eventDate, "i") };
+      filter.eventDate;
     }
     let teamM = await teamsMovemodel.find(filter);
     return teamM;

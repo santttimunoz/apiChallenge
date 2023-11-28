@@ -78,9 +78,10 @@ export class UserControl {
     try {
       let serviceUser = new UserService();
       let id = request.params.id;
+      let user = await serviceUser.searchUser(id)
       response.status(200).json({
         mensaje: "exito en la busqueda del usuario",
-        data: await serviceUser.searchUser(id),
+        data: user,
       });
     } catch (error) {
       response.status(400).json({
@@ -130,6 +131,24 @@ export class UserControl {
         message: "falla buscando el perfil del usuario: "+error.message,
         profile: null
       })
+    }
+  }
+  async updateProfile(request, response){
+    try {
+      const { role: userRoleJWT, userId: id } = request.payload;
+      let serviceUser = new UserService();      
+      let data = request.body;
+      console.log(id)
+      let updateUser = await serviceUser.updateProfile(id, data, userRoleJWT);
+      response.status(200).json({
+        mensaje: "exito actulizando datos",
+        updateUser: updateUser,
+      });
+    } catch (error) {
+      response.status(400).json({
+        mensaje: "error al actualizar los datos: " + error.message,
+        updateUser: null,
+      });
     }
   }
 }

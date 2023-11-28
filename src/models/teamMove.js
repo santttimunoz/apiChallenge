@@ -8,7 +8,7 @@ const teamMove = new Schema({
       ref: 'team'
     },
     idOldTeam:{
-      type: Schema.Types.ObjectId,            
+      type: Schema.Types.Mixed,            
       ref: 'team'
     },
     idUser:{

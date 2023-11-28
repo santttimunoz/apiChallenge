@@ -28,7 +28,6 @@ routesUser.put(
   "/api/users/:id",
   validateJWT,
   validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN]),
-
   controlUser.updateUser
 );
 routesUser.get(
@@ -43,6 +42,12 @@ routesUser.get(
   validateJWT,
   validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.NORMAL_USER]),
   controlUser.searchProfile
+);
+routesUser.put(
+  "/api/profile",
+  validateJWT,
+  validateRoles([ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.NORMAL_USER]),
+  controlUser.updateProfile
 );
 routesUser.get(
   "/api/users",

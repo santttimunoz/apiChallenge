@@ -146,6 +146,37 @@ routes.use(routesLogin);
  *            example:
  *              message: error buscando los usuarios.
  * 
+ *   put:
+ *     security: #ingreso de token de autorizacion
+ *       - bearerAuth: []
+ *     summary: actualiza el perfil del usuario logeado.
+ *     description: actulizar el perfil del usuario.
+ *     tags:
+ *       - Users 
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *            example:              
+ *              password: afredorio12.
+ *              englishLevel: B1
+ *              knowledge: java
+ *              linkCv: https://www.cvwizard.com/es?gad=1&gclid=CjwKCAiAx_GqBhBQEiwAlDNAZv4fxxpVUJibhlP7Bk7OaJ_8dONU532H-gfbWZu69EtvWXPapLzsehoCtKYQAvD_BwE                                     
+ *            $ref: '#/components/schemas/User'
+ *     responses:
+ *       '200':
+ *         description: Usuario creado exitosamente.
+ *         content:
+ *          application/json:
+ *            example:
+ *              message: exito en la creacion del usuario.
+ *       '400':
+ *         description: Error en la solicitud o datos inválidos.       
+ *         content:
+ *          application/json:
+ *            example:
+ *              message: falla en creacion del usuario.     
  * 
  * /api/users:
  *   get:
@@ -174,7 +205,7 @@ routes.use(routesLogin);
  *     security: #ingreso de token de autorizacion
  *       - bearerAuth: []
  *     summary: Crea un nuevo usuario
- *     description: Crea un nuevo usuario en el sistema.
+ *     description: Crea un nuevo usuario en el sistema (idTeam es opcional).
  *     tags:
  *       - Users
  *     requestBody:
@@ -251,9 +282,9 @@ routes.use(routesLogin);
  *         application/json:
  *           schema:
  *             example:              
- *              englishLevel: C1
- *              knowledge: java
- *              linkCv: https://www.cvwizard.com/es?gad=1&gclid=CjwKCAiAx_GqBhBQEiwAlDNAZv4fxxpVUJibhlP7Bk7OaJ_8dONU532H-gfbWZu69EtvWXPapLzsehoCtKYQAvD_BwE
+ *              name: sergiox
+ *              email: ser@gmail.com
+ *              role: user
  *             $ref: '#/components/schemas/User'
  *     responses:
  *       '200':
@@ -542,8 +573,7 @@ routes.use(routesAccount);
  *         application/json:
  *           schema:
  *             example:
- *               name: equipo 3
- *               members: ["6553a3e119b5647ae6306d5c","6553a44419b5647ae6306d60"]               
+ *               name: equipo 3                             
  *             $ref: '#/components/schemas/Team'
  *     responses:
  *       '200':
@@ -696,30 +726,6 @@ routes.use(routesTeam);
  *         - userName
  *         - eventDate
  * 
- * /api/teamMoveList:
- *   get:
- *     security: #ingreso de token de autorizacion
- *       - bearerAuth: []
- *     summary: Trae la lista de movimientos.
- *     description: Trae la lista de movimientos.
- *     tags:
- *      - TeamMoves
- *     schema:
- *       $ref: #/components/schemas/TeamMove
- *     responses:
- *       '200':
- *         description: Error .
- *         content:
- *          application/json:
- *            example:
- *              message:exito buscando la lista de movimientos.
- *       '400':
- *         description: Error al traer lista de movimientos.
- *         content:
- *          application/json:
- *            example:
- *              message: Error buscando la lista de movimientos.
- * 
  * /api/teamMove:
  *   post:
  *     security: #ingreso de token de autorizacion
@@ -733,8 +739,7 @@ routes.use(routesTeam);
  *       content:
  *         application/json:
  *           schema:   
- *             example:
- *               idOldTeam: 
+ *             example:               
  *               idNewTeam: 6553d8fd3763420fd915ed4b
  *               idUser: 6553a3e119b5647ae6306d5c         
  *             $ref: '#/components/schemas/TeamMove'
@@ -769,10 +774,10 @@ routes.use(routesTeam);
  *         type: string        
  *        description: nombre del usuario
  *      - in: query
- *        name: nameNewTeam
+ *        name: TeamName
  *        schema:
  *          type: string
- *        description: nombre del nuevo equipo al que ingresara el usuario
+ *        description: nombre del nuevo equipo 
  *      - in: query
  *        name: eventDate
  *        schema:

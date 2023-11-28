@@ -125,7 +125,7 @@ export class TeamControl {
     try {
       let teamM = new TeamService();
       let data = request.query;
-      console.log("data:", data);
+      //console.log("data:", data);
       let moveFound = await teamM.ShowTeamMove(data);
       console.log("Movimientos encontrados:", moveFound);
       if (moveFound && moveFound.length > 0) {
@@ -141,7 +141,7 @@ export class TeamControl {
     } catch (error) {
       console.log(error);
       response.status(404).json({
-        message: "error trayendo el movimiento",
+        message: "error trayendo el movimiento"+error.message,
       });
     }
   }

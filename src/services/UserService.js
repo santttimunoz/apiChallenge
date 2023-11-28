@@ -21,17 +21,17 @@ export class UserService {
     this.validate(data, userRoleJWT);
 
     let team = await teamModel.findById(idTeam);
-    if (!team) {
-      throw new Error("equipo no existe");
-    }
+   
     let user = new modelUser(data);
 
     user.password = await bcrypt.hash(user.password, 10);
     let newUser = await user.save();
 
     // delete newUser.password;
-    team.members.push(newUser._id);
-    team.save();
+     if (team) {
+      team.members.push(newUser._id);
+      team.save();
+    }
     return {
       id: newUser._id,
       name: newUser.name,
@@ -67,6 +67,9 @@ export class UserService {
     if (data.role) {
       this.validate(data, userRoleJWT);
     }
+    if(data.englishLevel || data.knowledge || data.linkCv){
+      throw new Error("no tienes permiso para actualizar esto")
+    }
     let newUser = await modelUser.findByIdAndUpdate(id, data, { new: true });
     // delete newUser.password;
     return {
@@ -100,6 +103,26 @@ export class UserService {
       englishLevel: profile.englishLevel,
       knowledge: profile.knowledge,
       linkCv: profile.linkCv,
+    };
+  }
+  async updateProfile(id, data, userRoleJWT) {
+    if (data.role) {
+      this.validate(data, userRoleJWT);
+    }
+    if(data.email || data.name){
+      throw new Error("no tienes permiso para actualizar este campo")
+    }
+    data.password = await bcrypt.hash(data.password, 10);
+    let newUser = await modelUser.findByIdAndUpdate(id, data, { new: true });
+    // delete newUser.password;
+    return {
+      id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+      role: newUser.role,
+      englishLevel: newUser.englishLevel,
+      knowledge: newUser.knowledge,
+      linkCv: newUser.linkCv,
     };
   }
 }
